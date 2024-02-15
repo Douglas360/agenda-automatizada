@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String
+  phone    String
+  password String
+  userMinistry UserMinistry[]
+  event     Event[]
+  isAdmin  Boolean  @default(false)  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("t_user")
+}
+
+model Ministry {
+  id        Int      @id @default(autoincrement())
+  name      String 
+  userMinistry UserMinistry[]
+  event     Event[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("t_ministry")
+}
+
+model UserMinistry {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  ministry   Ministry @relation(fields: [ministryId], references: [id])
+  ministryId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("t_user_ministry")
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  name      String
+  date      DateTime
+  description String?
+  image     String?
+  ministry  Ministry @relation(fields: [ministryId], references: [id])
+  ministryId Int
+  user      User @relation(fields: [userId], references: [id])
+  userId    Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("t_event")
+}
+
+model Config{
+  id        Int      @id @default(autoincrement())
+  phoneNumber       String
+  @@map("t_config")
+}
+
+model Phones{
+  id        Int      @id @default(autoincrement())
+  phoneNumber        String @unique
+  active    Boolean  @default(true)
+  @@map("t_phones")
+}
+
+
+
+
+
+
+

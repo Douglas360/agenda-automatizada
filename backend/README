@@ -1,0 +1,15 @@
+[] Somente Admin pode cadastrar usuario
+[] Admin consegue cadastrar eventos em todos os ministerios
+[] Usuario so pode cadastrar evento em seu ministerio
+[] Usuario so consegue deletar seu proprio evento
+[] Todos conseguem ver todos eventos
+
+[] Bot enviará notificação dos eventos do dia seguinte
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"from": "whatsapp:+14155238886", "to": "whatsapp:+1234567890", "body": "Hello, world!"}' \
+  http://localhost:3001/send-message
+
+
+curl -X POST https://b4a1-187-62-80-113.ngrok-free.app/send-message
