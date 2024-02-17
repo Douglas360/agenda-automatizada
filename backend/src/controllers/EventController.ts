@@ -30,6 +30,34 @@ class EventController {
     res.status(201).json(event);
   }
 
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const { name, description, date, ministryId } = req.body as IEventCreate;
+    const { idMinistryToken, isAdmin, user_id } =
+      req as unknown as IAuthRequest;
+
+    const { file } = req;
+
+    const folderName = "events";
+
+    const eventServices = new EventServices();
+    const event = await eventServices.update(
+      {
+        id: Number(id),
+        name,
+        description,
+        date,
+        file,
+        folderName,
+        ministryId: Number(ministryId),
+        user_id: Number(user_id),
+      },
+      { isAdmin, idMinistryToken } as IAuthRequest
+    );
+
+    res.status(200).json(event);
+  }
+
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     const { user_id, isAdmin } = req as unknown as IAuthRequest;

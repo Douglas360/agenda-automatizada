@@ -5,7 +5,7 @@ import cors from "cors";
 require("dotenv");
 import * as dotenv from "dotenv";
 import { router } from "./routes";
-import { twilioRouter } from "./hooks/ReceiveTwilio";
+import { twilioRouter } from "./utils/ReceiveTwilio";
 import prismaClient from "./prisma";
 
 const path = require("path");

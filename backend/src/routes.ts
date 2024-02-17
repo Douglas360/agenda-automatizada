@@ -33,6 +33,7 @@ router.get("/ministries", new MinistryController().getAllMinistries);
 
 //Router about events
 router.post("/events", upload.single("file"), new EventController().create);
+router.put("/events/:id", upload.single("file"), new EventController().update);
 router.delete("/events/:id", new EventController().delete);
 router.get("/events", new EventController().getAllEvents);
 

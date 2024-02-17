@@ -4,7 +4,16 @@
 [] Usuario so consegue deletar seu proprio evento
 [] Todos conseguem ver todos eventos
 
+[] Quando o usuario enviar OI, o bot enviará mensagem de boas vindas e salvar o numero do usuario no banco de dados
+[] Quando o usuario enviar TCHAU, o bot enviará mensagem de despedida e deletar o numero do usuario no banco de dados
+
 [] Bot enviará notificação dos eventos do dia seguinte
+[] Bot enviará notificação dos eventos que aconteceram em 3 dias
+
+[] No whatsapp, o bot enviará mensagem de boas vindas
+[] No whatsapp, o bot enviará mensagem de despedida
+
+
 
 curl -X POST \
   -H "Content-Type: application/json" \

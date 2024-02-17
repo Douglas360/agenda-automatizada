@@ -1,6 +1,6 @@
 import prismaClient from "../prisma";
 import { Event } from ".prisma/client";
-import { IEventCreate, IEventeDelete } from "../types/EventType";
+import { IEventCreate, IEventUpdate, IEventeDelete } from "../types/EventType";
 import { IAuthRequest } from "../types/AuthType";
 import { deleteFile, uploadFile } from "../config/multer";
 
@@ -81,6 +81,85 @@ class EventServices {
       throw new Error(error.message);
     }
   }
+  async update(
+    {
+      id,
+      name,
+      description,
+      date,
+      file,
+      folderName,
+      ministryId,
+      user_id,
+    }: IEventUpdate,
+    { isAdmin, idMinistryToken }: IAuthRequest
+  ) {
+    let event;
+
+    try {
+      await this.validateInputAndFile(
+        {
+          name,
+          description,
+          date,
+          ministryId,
+          user_id,
+        },
+        user_id
+      );
+      await this.validateMinistryExists(ministryId);
+      await this.validateIdMinistryTokenIsSameMinistryId(
+        idMinistryToken,
+        ministryId,
+        isAdmin
+      );
+
+      let fileUrl;
+      if (file) {
+        event = await prismaClient.event.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            description,
+            date,
+            ministryId,
+          },
+        });
+
+        // Se o evento foi criado com sucesso, então faça o upload do arquivo para o S3
+        fileUrl = await uploadFile(file, folderName);
+
+        // Atualize o evento com a URL do arquivo
+        await prismaClient.event.update({
+          where: {
+            id: event.id,
+          },
+          data: {
+            image: fileUrl as string,
+          },
+        });
+      } else {
+        // Se não há arquivo, crie o evento sem a imagem
+        event = await prismaClient.event.update({
+          where: {
+            id: user_id,
+          },
+          data: {
+            name,
+            description,
+            date,
+            ministryId,
+          },
+        });
+      }
+
+      return event;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 
   async delete({ user_id, id, isAdmin }: IEventeDelete) {
     try {
@@ -121,12 +200,7 @@ class EventServices {
     if (!name || !description || !date) {
       throw new Error("Name description and date are required");
     }
-
-    if (!file) {
-      throw new Error("Image is required");
-    }
   }
-
   private async validateEventExistsSameDate(date: Date) {
     const event = await prismaClient.event.findFirst({
       where: {
@@ -160,9 +234,11 @@ class EventServices {
       }
     }
   }
-
-  //User can only delete his own events
-  async validateUserCanDeleteEvent({ user_id, id, isAdmin }: IEventeDelete) {
+  private async validateUserCanDeleteEvent({
+    user_id,
+    id,
+    isAdmin,
+  }: IEventeDelete) {
     const event = await prismaClient.event.findFirst({
       where: {
         id,

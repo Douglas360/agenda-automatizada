@@ -14,6 +14,17 @@ export interface IEventCreate {
   user_id: number;
 }
 
+export interface IEventUpdate {
+  id: number;
+  name: string;
+  description?: string;
+  date: Date;
+  file?: FileObject;
+  folderName?: string;
+  ministryId: number;
+  user_id: number;
+}
+
 export interface IEventeDelete {
   id: number;
   user_id: number;
