@@ -1,4 +1,5 @@
 "use client";
+import "devextreme/dist/css/dx.light.css";
 import "jsvectormap/dist/css/jsvectormap.css";
 import "flatpickr/dist/flatpickr.min.css";
 import "@/css/satoshi.css";
