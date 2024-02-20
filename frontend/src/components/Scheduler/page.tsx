@@ -1,26 +1,26 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import { Scheduler } from "devextreme-react";
-import { Resource, View } from "devextreme-react/scheduler";
+import { Resource, View, Editing } from "devextreme-react/scheduler";
 
-const events = [
-  {
-    text: "Website Re-Design Plan",
-    startDate: new Date(2024, 1, 6, 9, 30),
-    endDate: new Date(2024, 1, 6, 11, 30),
-  },
-  {
-    text: "Book Flights to San Fran for Sales Trip",
-    startDate: new Date(2024, 1, 14, 12, 0),
-    endDate: new Date(2024, 1, 14, 13, 0),
-    allDay: true,
-  },
-];
+import { locale, loadMessages } from "devextreme/localization";
+import ptBR from "devextreme/localization/messages/pt.json";
 
-const SchedulerComponent = () => {
+import { assignees, data, type } from "../../mock/data";
+
+interface Props {
+  isEdit: boolean;
+}
+
+const SchedulerComponent = ({ isEdit }: Props) => {
+  useEffect(() => {
+    loadMessages(ptBR);
+    locale("pt-BR");
+  }, []);
+
   return (
     <>
       <Scheduler
-        dataSource={events}
+        dataSource={data}
         timeZone="America/Sao_Paulo"
         defaultCurrentView={"month"}
         firstDayOfWeek={1}
@@ -29,6 +29,24 @@ const SchedulerComponent = () => {
         height={600}
         noDataText="Nenhum evento encontrado"
       >
+        <Editing
+          allowAdding={isEdit}
+          allowUpdating={isEdit}
+          allowDeleting={isEdit}
+          allowDragging={isEdit}
+        />
+        <Resource
+          dataSource={assignees}
+          allowMultiple={true}
+          fieldExpr="assigneeId"
+          label="Ministério"
+          useColorAsDefault={true}
+        />
+        <Resource
+          dataSource={type}
+          fieldExpr="priorityId"
+          label="Tipo do Evento"
+        />
         <View type="month" name="Mês" />
         <View type="day" name="Dia" />
         <View type="agenda" name="Próximos Eventos" />

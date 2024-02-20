@@ -8,7 +8,7 @@ const CalendarPage = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Calendário de eventos" />
-      <SchedulerComponent />
+      <SchedulerComponent isEdit={true} />
     </DefaultLayout>
   );
 };
