@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { AuthProvider } from './AuthContext';
+import { EventsProvider } from './EventsContext';
 
 interface CombinedProviderProps {
   children: ReactNode;
@@ -8,5 +9,9 @@ interface CombinedProviderProps {
 export const CombinedProvider: React.FC<CombinedProviderProps> = ({
   children,
 }) => {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <EventsProvider>{children}</EventsProvider>
+    </AuthProvider>
+  );
 };
