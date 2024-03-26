@@ -1,4 +1,4 @@
-export type Ministry = {
+export type TMinistry = {
   id: number;
   name: string;
 };

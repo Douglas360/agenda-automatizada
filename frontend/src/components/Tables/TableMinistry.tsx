@@ -1,27 +1,25 @@
-"use client";
-import { Ministry } from "@/types/ministry";
-import React from "react";
+import { Ministry } from '../../types/ministry';
 
 const ministryData: Ministry[] = [
   {
     id: 1,
-    name: "Ministério de Louvor",
+    name: 'Ministério de Louvor',
   },
   {
     id: 2,
-    name: "Ministério de Dança",
+    name: 'Ministério de Dança',
   },
   {
     id: 3,
-    name: "Ministério de Crianças",
+    name: 'Ministério de Crianças',
   },
   {
     id: 4,
-    name: "Ministério de Adolescentes",
+    name: 'Ministério de Adolescentes',
   },
   {
     id: 5,
-    name: "Ministério de Jovens",
+    name: 'Ministério de Jovens',
   },
 ];
 
@@ -38,7 +36,7 @@ const TableMinistry = ({ onEdit }: Props) => {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm("Gostaria de excluir o ministério?")) {
+    if (confirm('Gostaria de excluir o ministério?')) {
       ministryData.splice(
         ministryData.findIndex((ministry) => ministry.id === id),
         1,
